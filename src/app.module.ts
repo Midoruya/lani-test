@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { DocumentModule } from './document/document.module';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -20,14 +19,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           username: configService.get<string>('database.user'),
           database: configService.get<string>('database.name'),
           password: configService.get<string>('database.password'),
-          entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+          entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+          synchronize: true,
         } as TypeOrmModuleOptions;
+
         return config;
       },
       inject: [ConfigService],
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
