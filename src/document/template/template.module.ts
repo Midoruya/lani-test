@@ -9,6 +9,7 @@ import { TemplateAttributeEntity } from './entity/template-attribute.entity';
   imports: [
     TypeOrmModule.forFeature([TemplateEntity, TemplateAttributeEntity]),
   ],
+  exports: [TemplateService],
   controllers: [TemplateController],
   providers: [TemplateService],
 })

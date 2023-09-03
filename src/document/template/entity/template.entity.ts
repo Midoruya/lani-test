@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { TemplateAttributeEntity } from './template-attribute.entity';
+import { DocumentEntity } from '../../entity/document.entity';
 
 @Entity()
 export class TemplateEntity {
@@ -12,5 +13,11 @@ export class TemplateEntity {
     (templateAttribute) => templateAttribute.template,
     { cascade: ['insert', 'update'] },
   )
-  TemplateAttribute: TemplateAttributeEntity[];
+  templateAttribute: TemplateAttributeEntity[];
+  @OneToMany(
+    () => DocumentEntity,
+    (templateAttribute) => templateAttribute.template,
+    { cascade: ['insert', 'update'] },
+  )
+  document: DocumentEntity[];
 }
