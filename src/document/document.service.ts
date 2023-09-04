@@ -19,22 +19,15 @@ export class DocumentService {
     @InjectRepository(DocumentEntity)
     private readonly documentEntity: Repository<DocumentEntity>,
   ) {}
-  async checkTypes(
-    templateAttribute: Array<object>,
-    attributeFields: Array<object>,
-  ) {
+  async checkTypes<
+    T extends { name: string; type: string },
+    A extends { name: string; value: string },
+  >(templateAttribute: Array<T>, attributeFields: Array<A>) {
     if (templateAttribute.length !== attributeFields.length)
       throw new BadRequestException('Не соответствие с шаблоном');
     await Promise.all(
       templateAttribute.map((item) => {
-        if (!('name' in item && 'type' in item))
-          throw new BadRequestException('Неизвестный тип данных');
-        const payloadAttr = attributeFields.find((el) => {
-          if (!('name' in el && 'name' in item)) return false;
-          return el.name === item.name;
-        });
-        if (!('value' in payloadAttr))
-          throw new BadRequestException('Неизвестный тип данных');
+        const payloadAttr = attributeFields.find((el) => el.name === item.name);
         const type = item.type as string;
         if (
           AttributesTypeEnum[type] === AttributesTypeEnum.string &&
