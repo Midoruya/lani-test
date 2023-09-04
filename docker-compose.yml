@@ -12,7 +12,6 @@ services:
   postgres:
     image: postgres:latest
     container_name: 'postgres_container'
-    command:
     environment:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_USER=${DATABASE_USER}

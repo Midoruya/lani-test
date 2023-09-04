@@ -8,7 +8,7 @@ export class DocumentEntity {
   @Column()
   name: string;
   @Column({ type: 'jsonb' })
-  document: object;
+  attributeFields: object;
   @ManyToOne(() => TemplateEntity, (template) => template.id)
   template: TemplateEntity;
 }

@@ -21,6 +21,7 @@ import { join } from 'path';
           password: configService.get<string>('database.password'),
           entities: [join(__dirname, '**', '*.entity.{ts,js}')],
           synchronize: true,
+          autoLoadEntities: true,
         } as TypeOrmModuleOptions;
 
         return config;

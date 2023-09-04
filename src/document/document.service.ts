@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { DataSource, Repository } from 'typeorm';
@@ -61,17 +65,21 @@ export class DocumentService {
       where: { id: payload.id },
     });
     const getTemplate = await this.templateService.getByID(payload.templateId);
+    if (!getTemplate) throw new NotFoundException('Неизвестный шаблон');
     await this.checkTypes(
       getTemplate.templateAttribute,
       payload.attributeFields,
     );
     doc.name = payload.name;
-    doc.document = payload.attributeFields;
+    doc.attributeFields = payload.attributeFields;
     doc.template = getTemplate;
     return await this.documentEntity.save(doc);
   }
   async delete(id: number) {
-    return await this.documentEntity.delete({ id: id });
+    const del = await this.documentEntity.delete({ id: id });
+    if (del.affected <= 0)
+      throw new NotFoundException('Не найдена запись на удаление');
+    return del.raw;
   }
   async getById(id: number) {
     return await this.documentEntity.findOne({
@@ -86,12 +94,13 @@ export class DocumentService {
   }
   async create(payload: CreateDocumentDto) {
     const template = await this.templateService.getByID(payload.templateId);
+    if (!template) throw new NotFoundException('Неизвестный шаблон');
     await this.checkTypes(template.templateAttribute, payload.attributeFields);
     const newDoc = await this.documentEntity.create({
       template: template,
-      document: payload.attributeFields,
+      attributeFields: payload.attributeFields,
       name: payload.name,
     });
-    await this.documentEntity.save(newDoc);
+    return await this.documentEntity.save(newDoc);
   }
 }

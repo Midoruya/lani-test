@@ -19,13 +19,13 @@ describe('AppController (e2e)', () => {
     const req = await request(app.getHttpServer())
       .get('/template/')
       .expect(200);
-    console.log(req.text);
+    console.log('/template/ (GET)', req.text);
   });
   it('/template/:id (GET)', async () => {
     const req = await request(app.getHttpServer())
       .get('/template/' + 2)
       .expect(200);
-    console.log(req.text);
+    console.log('/template/:id (GET)', req.text);
   });
   it('/template/ (POST)', async () => {
     const req = await request(app.getHttpServer())
@@ -39,7 +39,7 @@ describe('AppController (e2e)', () => {
         ],
       })
       .expect(201);
-    console.log(req.text);
+    console.log('/template/ (POST)', req.text);
   });
   it('/document/ (POST)', async () => {
     const req = await request(app.getHttpServer())
@@ -55,25 +55,25 @@ describe('AppController (e2e)', () => {
       })
       .expect(201);
 
-    console.log(req.text);
+    console.log('/document/ (POST)', req.text);
   });
   it('/document/ (GET)', async () => {
     const req = await request(app.getHttpServer())
       .get('/document/')
       .expect(200);
-    console.log(req.text);
+    console.log('/document/ (GET)', req.text);
   });
   it('/document/:id (GET)', async () => {
     const req = await request(app.getHttpServer())
       .get('/document/' + 3)
       .expect(200);
-    console.log(req.text);
+    console.log('/document/:id (GET)', req.text);
   });
   it('/document/:id (DELETE)', async () => {
     const req = await request(app.getHttpServer())
       .delete('/document/' + 1)
       .expect(200);
-    console.log(req.text);
+    console.log('/document/:id (DELETE)', req.text);
   });
   it('/document/ (PUT)', async () => {
     const req = await request(app.getHttpServer())
@@ -89,6 +89,6 @@ describe('AppController (e2e)', () => {
         templateId: 5,
       })
       .expect(200);
-    console.log(req.text);
+    console.log('/document/ (PUT)', req.text);
   });
 });
