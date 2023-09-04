@@ -33,8 +33,8 @@ describe('AppController (e2e)', () => {
       .send({
         name: 'test',
         attributeFields: [
-          { name: 'name', type: 'string' },
-          { name: 'years', type: 'number' },
+          { name: 'name', type: 'boolean' },
+          { name: 'years', type: 'numbunknovter' },
           { name: 'date', type: 'date' },
         ],
       })
